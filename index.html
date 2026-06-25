@@ -351,6 +351,10 @@ function startGame(name) {
 }
 
 function takeLoan() {
+    if (player.resources["money"] >= 1000) {
+        alert("세계은행 심사 거절: 현재 국고 자금이 넉넉하여 긴급 구제금융(Bailout) 대출 대상이 아닙니다. (가용 자금 $1,000 미만일 때만 신청 가능)");
+        return;
+    }
     player.resources["money"] += 3000;
     player.debt += 3000;
     appendLog(`<span style="color:var(--warning);">[세계은행] 국가 채권을 발행하여 $3,000의 긴급 대출을 승인받았습니다. (복리 주의)</span>`);
