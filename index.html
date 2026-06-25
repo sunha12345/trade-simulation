@@ -134,7 +134,7 @@
     <div id="screen-start" class="screen active">
         <h1>🌍 글로벌 패권 경쟁 : 극한의 현실주의 에디션</h1>
         <h2 style="font-weight: normal; color: var(--text-muted); font-size: 14px; text-align:center; margin-bottom: 30px;">
-            <b>복리 이자가 붙는 은행 부채, 외교 악화 시 부과되는 관세 장벽, 증시 대폭락과 기후 위기</b>까지.<br>
+            <b>복리 이자가 붙는 은행 부채, 외교 악화 시 부과되는 관세 장벽, 증시 박스권 유동성 및 기후 위기</b>까지.<br>
             자본주의의 냉혹한 현실과 대자연의 변수를 극복하고 국가를 번영시키세요.
         </h2>
         <div class="country-grid">
@@ -351,13 +351,20 @@ function startGame(name) {
 }
 
 function takeLoan() {
-    if (player.resources["money"] >= 1000) {
-        alert("세계은행 심사 거절: 현재 국고 자금이 넉넉하여 긴급 구제금융(Bailout) 대출 대상이 아닙니다. (가용 자금 $1,000 미만일 때만 신청 가능)");
+    let totalStockValue = 0;
+    for (let s in player.stocks) {
+        totalStockValue += player.stocks[s] * stocks[s].price;
+    }
+    let totalAssets = player.resources["money"] + totalStockValue;
+
+    if (totalAssets >= 400) {
+        alert(`세계은행 심사 거절: 국가 총 자산(현금+주식 가치)이 $${Math.floor(totalAssets)}로 아직 여유가 있습니다. 총 가치가 $400 미만인 극심한 국가 부도 위기일 때만 구제금융 신청이 가능합니다.`);
         return;
     }
+    
     player.resources["money"] += 3000;
     player.debt += 3000;
-    appendLog(`<span style="color:var(--warning);">[세계은행] 국가 채권을 발행하여 $3,000의 긴급 대출을 승인받았습니다. (복리 주의)</span>`);
+    appendLog(`<span style="color:var(--warning);">[세계은행] 국가 총자산 붕괴로 인해 $3,000의 긴급 구제금융 대출이 최종 승인되었습니다.</span>`);
     refreshInterface();
 }
 
@@ -401,7 +408,6 @@ function modifyRelation(botName, amount) {
     let b = bots[botName];
     b.relation = Math.max(0, Math.min(100, b.relation + amount));
     
-    // 외교 관계 파탄 시 자동 금수조치 활성화
     if(b.relation <= 15 && !b.isEmbargo) {
         b.isEmbargo = true;
         appendLog(`<span style="color:var(--danger); font-weight:bold;">🚫 [보복 성명] ${botName}이 우리를 적대국으로 규정하고 '자원 금수조치'를 단행했습니다!</span>`);
@@ -439,7 +445,6 @@ function calculateNationalPower(countryName, isPlayer) {
     let totalScore = lvl * 2500;
     for (let resName in resourceValues) totalScore += (res[keyMapping[resName]] || 0) * resourceValues[resName];
     
-    // 부채 감점 요소
     let debt = isPlayer ? player.debt : bots[countryName].debt;
     totalScore -= (debt * 0.05);
 
@@ -487,19 +492,17 @@ function updateStocks() {
     for(let s in stocks) {
         stocks[s].prevPrice = stocks[s].price;
         
-        // 현실적인 가치 변동: 평균 0을 기준으로 -15% ~ +15% 등락
         let change = (Math.random() - 0.5) * 0.30; 
         
-        if (globalStatus.activeEvent === 'black_monday') change -= 0.40; // 폭락 폭 조정
+        if (globalStatus.activeEvent === 'black_monday') change -= 0.40; 
         if (globalStatus.activeEvent === 'singularity') change += 0.20;
 
         let newPrice = Math.round(stocks[s].price * (1 + change));
         
-        // 10 ~ 100 달러 박스권 유지 (가치 현실화)
         if (newPrice < 10) {
-            newPrice = 10 + Math.floor(Math.random() * 5); // 하한선 방어 (반발 매수세)
+            newPrice = 10 + Math.floor(Math.random() * 5); 
         } else if (newPrice > 100) {
-            newPrice = 100 - Math.floor(Math.random() * 5); // 상한선 저항 (차익 실현 매물)
+            newPrice = 100 - Math.floor(Math.random() * 5); 
         }
 
         stocks[s].price = newPrice;
@@ -555,7 +558,6 @@ function refreshInterface() {
     document.getElementById("lbl-level").innerText = player.level;
     document.getElementById("r-debt").innerText = `$${Math.floor(player.debt)}`;
 
-    // 파산 위기 경고창
     if(player.resources["money"] < 500 && player.debt > 5000) {
         document.getElementById("item-money").style.background = "#7f1d1d";
     } else {
@@ -593,7 +595,6 @@ function appendLog(txt) {
     logBox.scrollTop = logBox.scrollHeight;
 }
 
-// 💥 하드코어 이벤트 시스템 (블랙 먼데이, 기후 위기 포함)
 function triggerExtremeEvent() {
     const ticker = document.getElementById("news-ticker");
     const tickerText = ticker.querySelector("span");
@@ -618,7 +619,7 @@ function triggerExtremeEvent() {
             id: 'black_monday',
             run: () => {
                 ticker.className = "news-ticker";
-                tickerText.innerText = `📉 [블랙 먼데이 발발] 전 세계 증시가 패닉에 빠졌습니다! 모든 주식의 가치가 일제히 대폭락(반토막)합니다!`;
+                tickerText.innerText = `📉 [블랙 먼데이 발발] 전 세계 증시가 패닉에 빠졌습니다! 모든 주식의 가치가 일제히 대폭락합니다!`;
                 appendLog(`<span style="color:var(--danger); font-weight:bold;">📉 세계 경제 대공황: 글로벌 증시 거품 붕괴!</span>`);
                 globalStatus.activeEvent = 'black_monday';
             }
@@ -630,7 +631,7 @@ function triggerExtremeEvent() {
                 if(disasterBots.length > 0) {
                     let victim = disasterBots[Math.floor(Math.random() * disasterBots.length)];
                     let sysKey = keyMapping[bots[victim].specialty];
-                    bots[victim].resources[sysKey] = Math.floor(bots[victim].resources[sysKey] * 0.5); // 반토막
+                    bots[victim].resources[sysKey] = Math.floor(bots[victim].resources[sysKey] * 0.5); 
                     ticker.className = "news-ticker warning";
                     tickerText.innerText = `🌪️ [기후 재난] '${victim}'에 유례없는 자연재해가 덮쳤습니다. 해당 국가의 1차 자원 국고가 절반으로 소실되었습니다.`;
                     appendLog(`<span style="color:var(--warning)">🌪️ 기후 재난으로 ${victim}의 생산 경제망 궤멸!</span>`);
@@ -668,10 +669,8 @@ function autoProduceResources() {
     else if (["tech", "gold", "oil"].includes(pKey)) player.resources[pKey] += 1 * pResMod; 
     else player.resources[pKey] += 12 * pResMod; 
 
-    // 부채 5% 복리 증가!
     if(player.debt > 0) {
         player.debt = player.debt * 1.05;
-        // IMF 징수 이벤트
         if (player.debt > 15000 && player.resources["tech"] > 0) {
             player.debt -= 5000;
             player.resources["tech"] -= 1;
@@ -679,16 +678,15 @@ function autoProduceResources() {
         }
     }
 
-    // 봇 생산 & 부채 관리
     for (let b in bots) {
         if(bots[b].debt > 0) bots[b].debt = bots[b].debt * 1.05;
         if(bots[b].debt > 10000 && bots[b].resources["money"] > 2000) {
-            bots[b].resources["money"] -= 2000; bots[b].debt -= 2000; // 봇 자가 상환
+            bots[b].resources["money"] -= 2000; bots[b].debt -= 2000; 
         }
 
         let bMod = 1;
-        if (bots[b].isBigBang) bMod = 4; // 빅뱅 모드 4배
-        else if (bots[b].isUnderdog) bMod = 2.5; // 일반 추격 2.5배
+        if (bots[b].isBigBang) bMod = 4; 
+        else if (bots[b].isUnderdog) bMod = 2.5; 
         
         let bSpec = bots[b].specialty;
         let bKey = keyMapping[bSpec];
@@ -703,11 +701,10 @@ function getBotSafeTradableAmount(botName, sysKey, currentStock) {
     let b = bots[botName];
     if (b.level >= upgradeSteps.length) return currentStock;
     let reserveLimit = Math.ceil((upgradeSteps[b.level].req[Object.keys(keyMapping).find(k=>keyMapping[k]===sysKey)] || 0) * 0.3);
-    if (b.isUnderdog) reserveLimit = Math.ceil(reserveLimit * 1.6); // 신흥국은 비축 본능 강화
+    if (b.isUnderdog) reserveLimit = Math.ceil(reserveLimit * 1.6); 
     return Math.max(0, currentStock - reserveLimit);
 }
 
-// 고압적/공격적 제안 유도 시스템 (관세 로직 추가)
 function generateIncomingProposal() {
     if (activeIncomingProposal || document.getElementById("bot-nego-modal").classList.contains("open")) return;
 
@@ -724,7 +721,6 @@ function generateIncomingProposal() {
 
     let baseBotGiveAmt = botGiveType === "돈" ? 900 : (["노동력", "목재", "농산물", "철광석"].includes(botGiveType) ? 40 : 3);
     
-    // 빅뱅 상태이거나 적대적 관계면 무조건 후려치는 불평등 조약 요구
     let forceMod = 1.0;
     if(selectedBot.isBigBang || selectedBot.relation < 35) forceMod = 0.65; 
 
@@ -762,7 +758,6 @@ function submitPlayerNego() {
     closeModal('nego-modal');
 
     let targetBot = bots[activeIncomingProposal.botName];
-    // 기세등등한 빅뱅 국가는 플레이어의 네고를 거의 받지 않음
     let tolerance = targetBot.isBigBang ? 1.01 : 1.15;
 
     if ((bGive / pGive) <= (activeIncomingProposal.giveAmt / activeIncomingProposal.takeAmt) * tolerance) {
@@ -784,7 +779,6 @@ function handleBotOffer(accept) {
         let skReq = keyMapping[activeIncomingProposal.takeType];
         let skGive = keyMapping[activeIncomingProposal.giveType];
         
-        // 관세 확인 로직
         let tariff = targetBot.relation < 50 ? 500 : 0;
         if (player.resources["money"] < tariff) { alert("관세를 지불할 자금이 부족해 거래가 취소됩니다."); clearProposalArea(); return; }
 
