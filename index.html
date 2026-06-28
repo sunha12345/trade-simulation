@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>글로벌 패권 경쟁 : 하드코어 현실주의</title>
+    <title>글로벌 패권 경쟁 : 문명 발전 에디션</title>
     <style>
         :root {
             --bg-color: #020617;
@@ -119,30 +119,23 @@
         .btn-sell { background-color: #0284c7; }
 
         .debt-text { color: var(--danger); font-weight: bold; font-family: monospace; }
-        .bank-ops { display: flex; gap: 10px; margin-top: 10px; }
-
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-overlay.open { display: flex; }
-        .modal-content { background: #1e293b; padding: 24px; border-radius: 16px; width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid var(--border); }
-        .modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
-        .modal-buttons button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div id="game-container">
     <div id="screen-start" class="screen active">
-        <h1>🌍 글로벌 패권 경쟁 : 극한의 현실주의 에디션</h1>
+        <h1>🌍 글로벌 패권 경쟁 : 문명 발전 에디션</h1>
         <h2 style="font-weight: normal; color: var(--text-muted); font-size: 14px; text-align:center; margin-bottom: 30px;">
-            <b>복리 이자가 붙는 은행 부채, 외교 악화 시 부과되는 관세 장벽, 증시 박스권 유동성 및 기후 위기</b>까지.<br>
-            자본주의의 냉혹한 현실과 대자연의 변수를 극복하고 국가를 번영시키세요.
+            10단계의 인류 발전 테크트리를 타고 먼저 문명을 고도화하세요.<br>
+            미국 외 다른 나라도 기본 재정이 유입되며, 특정 발전 단계 달성 시 자원 생산 속도가 증폭됩니다.
         </h2>
         <div class="country-grid">
             <button class="btn-country" onclick="startGame('대한민국')">🇰🇷 대한민국 <small>💻 첨단기술 [희귀]</small></button>
             <button class="btn-country" onclick="startGame('중국')">🇨🇳 중국 <small>⚙️ 노동력</small></button>
             <button class="btn-country" onclick="startGame('남아공')">🇿🇦 남아공 <small>🪙 금 [희귀]</small></button>
             <button class="btn-country" onclick="startGame('캐나다')">🇨🇦 캐나다 <small>🪵 목재</small></button>
-            <button class="btn-country" onclick="startGame('미국')">🇺🇸 미국 <small>💵 금융자본</small></button>
+            <button class="btn-country" onclick="startGame('미국')">🇺🇸 미국 <small>💵 금융자본 (기본소득 특화)</small></button>
             <button class="btn-country" onclick="startGame('브라질')">🇧🇷 브라질 <small>🌾 농산물</small></button>
             <button class="btn-country" onclick="startGame('호주')">🇦🇺 호주 <small>🧱 철광석</small></button>
             <button class="btn-country" onclick="startGame('사우디')">🇸🇦 사우디 <small>🛢️ 석유 [희귀]</small></button>
@@ -151,8 +144,8 @@
 
     <div id="screen-main" class="screen">
         <div class="header-bar">
-            <div>주권국: <span id="lbl-country"></span> (<span id="lbl-level">0</span>단계)</div>
-            <div><span class="pulse"></span><span style="color:#fca5a5;">부채/관세 및 재난 시뮬레이터 가동</span></div>
+            <div>주권국: <span id="lbl-country"></span> (<span id="lbl-level-name">0단계</span>)</div>
+            <div><span class="pulse"></span><span style="color:#fca5a5;">부채/재난 및 문명 고도화 시스템 가동</span></div>
         </div>
         
         <div id="news-ticker" class="news-ticker peace">
@@ -216,7 +209,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>🏪 국가 현대화 프로젝트</h3>
+                    <h3>🏪 국가 국가 발전 프로젝트 (테크트리)</h3>
                     <div id="shop-details">로딩 중...</div>
                     <button id="btn-shop-upgrade" class="btn-action btn-success" onclick="triggerUpgrade()">프로젝트 최종 승인</button>
                 </div>
@@ -227,7 +220,7 @@
                     <h3>🏆 세계 경제 무역 패권 순위</h3>
                     <table class="rank-table">
                         <thead>
-                            <tr><th>순위</th><th>국가명</th><th>단계</th><th>종합 지수</th><th>외교 관계</th></tr>
+                            <tr><th>순위</th><th>국가명</th><th>발전 단계</th><th>종합 지수</th><th>외교 관계</th></tr>
                         </thead>
                         <tbody id="rank-tbody"></tbody>
                     </table>
@@ -252,27 +245,39 @@
     </div>
 </div>
 
-<div id="nego-modal" class="modal-overlay">
-    <div class="modal-content">
+<div id="nego-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 1000;">
+    <div class="modal-content" style="background: #1e293b; padding: 24px; border-radius: 16px; width: 400px; border: 1px solid var(--border);">
         <h3>🤝 무역 조건 정밀 재조율</h3>
         <label id="nego-take-label">우리 측 제공량</label><input type="number" id="nego-player-give">
         <label id="nego-give-label">상대 측 제공량</label><input type="number" id="nego-bot-give">
-        <div class="modal-buttons">
-            <button style="background:var(--success); color:white;" onclick="submitPlayerNego()">수정안 송부</button>
-            <button style="background:#475569; color:white;" onclick="closeModal('nego-modal')">협상 중단</button>
+        <div class="modal-buttons" style="display: flex; gap: 10px; margin-top: 20px;">
+            <button style="flex:1; padding:12px; border:none; border-radius:8px; font-weight:bold; background:var(--success); color:white;" onclick="submitPlayerNego()">수정안 송부</button>
+            <button style="flex:1; padding:12px; border:none; border-radius:8px; font-weight:bold; background:#475569; color:white;" onclick="closeModal('nego-modal')">협상 중단</button>
         </div>
     </div>
 </div>
 
-<div id="bot-nego-modal" class="modal-overlay">
-    <div class="modal-content">
+<div id="bot-nego-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 1000;">
+    <div class="modal-content" style="background: #1e293b; padding: 24px; border-radius: 16px; width: 400px; border: 1px solid var(--border);">
         <h3 style="color:var(--warning);" id="bot-nego-title">⚠️ 상대국 역제안 수신</h3>
         <p id="bot-nego-text" style="font-size:13px; line-height:1.5; color:#cbd5e1;"></p>
-        <div class="modal-buttons">
-            <button style="background:var(--success); color:white;" onclick="acceptBotNegoCounter()">조건 수용</button>
-            <button style="background:var(--danger); color:white;" onclick="rejectBotNegoCounter()">조약 파기</button>
+        <div class="modal-buttons" style="display: flex; gap: 10px; margin-top: 20px;">
+            <button style="flex:1; padding:12px; border:none; border-radius:8px; font-weight:bold; background:var(--success); color:white;" onclick="acceptBotNegoCounter()">조건 수용</button>
+            <button style="flex:1; padding:12px; border:none; border-radius:8px; font-weight:bold; background:var(--danger); color:white;" onclick="rejectBotNegoCounter()">조약 파기</button>
         </div>
     </div>
+</div>
+
+<!-- 추가된 게임 엔딩 화면 -->
+<div id="ending-screen" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.95); justify-content: center; align-items: center; z-index: 9999; flex-direction: column; text-align: center;">
+    <div style="background: var(--danger); color: white; padding: 10px 40px; font-size: 24px; font-weight: bold; border-radius: 8px; margin-bottom: 30px; animation: pulse-border 1s infinite;">BREAKING NEWS</div>
+    <h1 id="ending-title" style="color: white; font-size: 48px; margin-bottom: 20px; line-height: 1.3;">[긴급 속보]<br><span style="color: var(--accent);">대한민국</span>, 초지능 AI 특이점 도달!</h1>
+    <p style="color: var(--text-muted); font-size: 20px; max-width: 800px; line-height: 1.6;">
+        전 세계의 경제와 기술 패권이 단일 국가의 초인공지능 통제 하에 들어갔습니다.<br>
+        국제 사회는 이 새로운 시대의 개막을 선포하며, 치열했던 글로벌 패권 경쟁은 종식을 고합니다.<br><br>
+        <b style="color: var(--success); font-size: 24px;">게임 클리어! 당신의 국가는 세계의 지배자가 되었습니다.</b>
+    </p>
+    <button onclick="location.reload()" style="margin-top: 40px; padding: 15px 40px; font-size: 18px; font-weight: bold; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">새로운 역사 쓰기 (재시작)</button>
 </div>
 
 <script>
@@ -290,10 +295,18 @@ const baseCountries = {
 let resourceValues = { "첨단기술": 100, "금": 65, "석유": 45, "철광석": 4, "노동력": 2, "목재": 2, "농산물": 2, "돈": 0.05 };
 const keyMapping = { "첨단기술": "tech", "노동력": "labor", "금": "gold", "목재": "wood", "농산물": "agro", "철광석": "iron", "석유": "oil", "돈": "money" };
 
+// 10단계 발전 테크트리 정의
 const upgradeSteps = [
-    { name: "레벨 1: 스마트 제조 글로벌 자립 벨트", req: { "노동력": 30, "목재": 30, "농산물": 30 } },
-    { name: "레벨 2: 독점적 첨단 공급망 가치 사슬", req: { "첨단기술": 4, "철광석": 45, "석유": 10 } }, 
-    { name: "레벨 3: 초시공 글로벌 가치 헤게모니", req: { "금": 6, "돈": 8000, "첨단기술": 5 } }
+    { name: "레벨 1: 농업의 시작 🌱", req: { "농산물": 20, "목재": 20 }, prodBonus: 1.0 },
+    { name: "레벨 2: 농업의 발전 🌾", req: { "농산물": 50, "돈": 500 }, prodBonus: 1.2 },
+    { name: "레벨 3: 기초 수공업 공방 🪵", req: { "목재": 60, "노동력": 40 }, prodBonus: 1.2 },
+    { name: "레벨 4: 광업 혁명과 제련 기술 🧱", req: { "철광석": 60, "돈": 1000 }, prodBonus: 1.4 },
+    { name: "레벨 5: 기계 개발 (생산량 UP) ⚙️", req: { "철광석": 80, "노동력": 80, "돈": 2000 }, prodBonus: 1.8 },
+    { name: "레벨 6: 기계 강화 및 동력화 🛢️", req: { "석유": 15, "철광석": 100 }, prodBonus: 2.2 },
+    { name: "레벨 7: 전기 및 자동화 컨베이어 벨트 💻", req: { "첨단기술": 4, "돈": 4000 }, prodBonus: 2.6 },
+    { name: "레벨 8: 컴퓨터 정보화 혁명 📡", req: { "첨단기술": 8, "금": 8 }, prodBonus: 3.0 },
+    { name: "레벨 9: 첨단 인공지능 자율 팩토리 🤖", req: { "첨단기술": 15, "금": 12, "돈": 8000 }, prodBonus: 4.0 },
+    { name: "레벨 10: 초지능 AI 싱귤래리티 (게임 종료) 🧠", req: { "첨단기술": 30, "돈": 10000 }, prodBonus: 10.0 }
 ];
 
 const allResources = ["첨단기술", "노동력", "금", "목재", "농산물", "철광석", "석유", "돈"];
@@ -309,6 +322,9 @@ let bots = {};
 let activeIncomingProposal = null;
 let activeBotNegoProposal = null;
 let globalStatus = { activeEvent: null, underdogNames: [] };
+
+// 게임 진행 타이머 식별자 추가
+let prodInt, propInt, botTradeInt, botUpInt, stockInt, eventInt;
 
 function setPolicy(p) {
     player.policy = p;
@@ -342,12 +358,12 @@ function startGame(name) {
     refreshInterface();
     renderStocks();
 
-    setInterval(autoProduceResources, 3000); 
-    setInterval(generateIncomingProposal, 5500);
-    setInterval(botToBotTradeSimulation, 4000); 
-    setInterval(botAutoUpgradeCheck, 7500); 
-    setInterval(updateStocks, 5000); 
-    setInterval(triggerExtremeEvent, 16000); 
+    prodInt = setInterval(autoProduceResources, 3000); 
+    propInt = setInterval(generateIncomingProposal, 5500);
+    botTradeInt = setInterval(botToBotTradeSimulation, 4000); 
+    botUpInt = setInterval(botAutoUpgradeCheck, 7500); 
+    stockInt = setInterval(updateStocks, 5000); 
+    eventInt = setInterval(triggerExtremeEvent, 16000); 
 }
 
 function takeLoan() {
@@ -422,7 +438,7 @@ function modifyRelation(botName, amount) {
 function highlightSpecialty(specialty) {
     document.querySelectorAll('.res-item').forEach(item => item.classList.remove('highlight'));
     const key = keyMapping[specialty];
-    if (key && key !== "money") document.getElementById(`item-${key}`).classList.add('highlight');
+    if (key && key !== "money") document.getElementById(`item-${key}`).add ? document.getElementById(`item-${key}`).classList.add('highlight') : null;
 }
 
 function buildSelectMenus() {
@@ -442,7 +458,7 @@ function buildSelectMenus() {
 function calculateNationalPower(countryName, isPlayer) {
     let lvl = isPlayer ? player.level : bots[countryName].level;
     let res = isPlayer ? player.resources : bots[countryName].resources;
-    let totalScore = lvl * 2500;
+    let totalScore = lvl * 1500;
     for (let resName in resourceValues) totalScore += (res[keyMapping[resName]] || 0) * resourceValues[resName];
     
     let debt = isPlayer ? player.debt : bots[countryName].debt;
@@ -476,11 +492,12 @@ function updateLeaderboard() {
         }
 
         let rowClass = item.isPlayer ? "rank-row-player" : "";
+        let stepName = upgradeSteps[item.level] ? upgradeSteps[item.level].name.split(':')[1] || upgradeSteps[item.level].name : "최고 존엄";
         tbody.innerHTML += `
             <tr class="${rowClass}">
                 <td>${idx + 1}위</td>
                 <td>${item.isPlayer ? '⭐ ' : ''}${item.name}</td>
-                <td>${item.level}단계</td>
+                <td>${item.level}단계<br><small style="color:var(--text-muted); font-size:11px;">${stepName}</small></td>
                 <td>${item.score.toLocaleString()} P ${badgeText}</td>
                 <td>${item.isPlayer ? '-' : getRelationText(item.botObj)}</td>
             </tr>
@@ -491,19 +508,13 @@ function updateLeaderboard() {
 function updateStocks() {
     for(let s in stocks) {
         stocks[s].prevPrice = stocks[s].price;
-        
         let change = (Math.random() - 0.5) * 0.30; 
-        
         if (globalStatus.activeEvent === 'black_monday') change -= 0.40; 
         if (globalStatus.activeEvent === 'singularity') change += 0.20;
 
         let newPrice = Math.round(stocks[s].price * (1 + change));
-        
-        if (newPrice < 10) {
-            newPrice = 10 + Math.floor(Math.random() * 5); 
-        } else if (newPrice > 100) {
-            newPrice = 100 - Math.floor(Math.random() * 5); 
-        }
+        if (newPrice < 10) newPrice = 10 + Math.floor(Math.random() * 5); 
+        else if (newPrice > 100) newPrice = 100 - Math.floor(Math.random() * 5); 
 
         stocks[s].price = newPrice;
     }
@@ -554,8 +565,9 @@ function sellStock(stockName, amount) {
 }
 
 function refreshInterface() {
+    let currentBonus = upgradeSteps[player.level] ? upgradeSteps[player.level].prodBonus : 6.0;
     document.getElementById("lbl-country").innerText = player.name;
-    document.getElementById("lbl-level").innerText = player.level;
+    document.getElementById("lbl-level-name").innerText = `${player.level}단계 (${upgradeSteps[player.level] ? upgradeSteps[player.level].name : "최고 문명"}) [생산율 x${currentBonus}]`;
     document.getElementById("r-debt").innerText = `$${Math.floor(player.debt)}`;
 
     if(player.resources["money"] < 500 && player.debt > 5000) {
@@ -581,10 +593,10 @@ function refreshInterface() {
             reqLines.push(`${res} ${needed}(${owned})`);
             if (owned < needed) criteriaMet = false;
         }
-        shopDetails.innerHTML = `<strong>${currentStep.name}</strong><br><span style="font-size:11px; color:var(--text-muted);">조건: ${reqLines.join(', ')}</span>`;
+        shopDetails.innerHTML = `<strong>다음 목표: ${currentStep.name}</strong><br><span style="font-size:11px; color:var(--text-muted);">필수 자원: ${reqLines.join(', ')} <br>💡 달성 시 자원 가동률 보너스 상승!</span>`;
         btnUpgrade.disabled = !criteriaMet;
     } else {
-        shopDetails.innerHTML = "🏆 대전략 승리: 글로벌 최고 통상 패권 장악!"; btnUpgrade.disabled = true;
+        shopDetails.innerHTML = "🚀 인류 진화 완료: 모든 행성을 정복한 지배종이 되었습니다!"; btnUpgrade.disabled = true;
     }
     updateLeaderboard();
 }
@@ -598,7 +610,6 @@ function appendLog(txt) {
 function triggerExtremeEvent() {
     const ticker = document.getElementById("news-ticker");
     const tickerText = ticker.querySelector("span");
-    
     for (let b in bots) { bots[b].isBigBang = false; }
     globalStatus.activeEvent = null;
 
@@ -637,19 +648,6 @@ function triggerExtremeEvent() {
                     appendLog(`<span style="color:var(--warning)">🌪️ 기후 재난으로 ${victim}의 생산 경제망 궤멸!</span>`);
                 }
             }
-        },
-        {
-            id: 'singularity',
-            run: () => {
-                if(globalStatus.underdogNames.length > 0) {
-                    let sciBot = globalStatus.underdogNames[Math.floor(Math.random() * globalStatus.underdogNames.length)];
-                    bots[sciBot].level = Math.min(3, bots[sciBot].level + 1);
-                    bots[sciBot].resources["money"] += 4000;
-                    ticker.className = "news-ticker warning";
-                    tickerText.innerText = `🧬 [과학기술 특이점] 하위권이던 '${sciBot}'이 신기술 돌파에 성공하며 산업 공정을 강제 레벨업했습니다!`;
-                    appendLog(`<span style="color:var(--accent); font-weight:bold;">🧬 특이점 발발: ${sciBot} 단숨에 지수 도약!</span>`);
-                }
-            }
         }
     ];
 
@@ -662,37 +660,47 @@ function triggerExtremeEvent() {
 function autoProduceResources() {
     let pResMod = player.policy === 'resource' ? 2 : (player.policy === 'finance' ? 0.5 : 1);
     let pFinMod = player.policy === 'finance' ? 2 : (player.policy === 'resource' ? 0.5 : 1);
+    
+    // 플레이어의 기술 발전 레벨 보너스 적용
+    let pLevelBonus = upgradeSteps[player.level] ? upgradeSteps[player.level].prodBonus : 6.0;
+
+    // 미국이 아니더라도 들어오는 기본소득 시스템 벨런싱
+    let isPlayerAmerica = (player.name === "미국");
+    player.resources["money"] += (isPlayerAmerica ? 450 : 120) * pFinMod; 
 
     let pSpec = baseCountries[player.name].specialty;
     let pKey = keyMapping[pSpec];
-    if (pKey === "money") player.resources[pKey] += 500 * pFinMod;
-    else if (["tech", "gold", "oil"].includes(pKey)) player.resources[pKey] += 1 * pResMod; 
-    else player.resources[pKey] += 12 * pResMod; 
+    if (pKey !== "money") {
+        if (["tech", "gold", "oil"].includes(pKey)) player.resources[pKey] += Math.round(1 * pResMod * pLevelBonus); 
+        else player.resources[pKey] += Math.round(12 * pResMod * pLevelBonus); 
+    }
 
     if(player.debt > 0) {
         player.debt = player.debt * 1.05;
         if (player.debt > 15000 && player.resources["tech"] > 0) {
-            player.debt -= 5000;
-            player.resources["tech"] -= 1;
-            appendLog(`<span style="color:var(--danger); font-weight:bold;">🚨 [IMF 강제 집행] 막대한 부채로 인해 핵심 기술력이 압류되어 헐값에 매각되었습니다!</span>`);
+            player.debt -= 5000; player.resources["tech"] -= 1;
+            appendLog(`<span style="color:var(--danger); font-weight:bold;">🚨 [IMF 강제 집행] 부채 초과로 기술력 독점권 박탈 및 강제 매각!</span>`);
         }
     }
 
     for (let b in bots) {
         if(bots[b].debt > 0) bots[b].debt = bots[b].debt * 1.05;
-        if(bots[b].debt > 10000 && bots[b].resources["money"] > 2000) {
-            bots[b].resources["money"] -= 2000; bots[b].debt -= 2000; 
-        }
-
+        
+        let bLevelBonus = upgradeSteps[bots[b].level] ? upgradeSteps[bots[b].level].prodBonus : 6.0;
         let bMod = 1;
         if (bots[b].isBigBang) bMod = 4; 
         else if (bots[b].isUnderdog) bMod = 2.5; 
-        
+
+        // AI 국가들도 고유의 돈 유입 (미국은 더 많이)
+        let isBotAmerica = (b === "미국");
+        bots[b].resources["money"] += (isBotAmerica ? 450 : 100) * bMod;
+
         let bSpec = bots[b].specialty;
         let bKey = keyMapping[bSpec];
-        if (bKey === "money") bots[b].resources[bKey] += (450 * bMod);
-        else if (["tech", "gold", "oil"].includes(bKey)) bots[b].resources[bKey] += Math.ceil(1 * bMod);
-        else bots[b].resources[bKey] += (12 * bMod);
+        if (bKey !== "money") {
+            if (["tech", "gold", "oil"].includes(bKey)) bots[b].resources[bKey] += Math.ceil(1 * bMod * bLevelBonus);
+            else bots[b].resources[bKey] += Math.round(12 * bMod * bLevelBonus);
+        }
     }
     refreshInterface();
 }
@@ -700,14 +708,13 @@ function autoProduceResources() {
 function getBotSafeTradableAmount(botName, sysKey, currentStock) {
     let b = bots[botName];
     if (b.level >= upgradeSteps.length) return currentStock;
-    let reserveLimit = Math.ceil((upgradeSteps[b.level].req[Object.keys(keyMapping).find(k=>keyMapping[k]===sysKey)] || 0) * 0.3);
-    if (b.isUnderdog) reserveLimit = Math.ceil(reserveLimit * 1.6); 
+    let currentStep = upgradeSteps[b.level];
+    let reserveLimit = Math.ceil((currentStep.req[Object.keys(keyMapping).find(k=>keyMapping[k]===sysKey)] || 0) * 0.3);
     return Math.max(0, currentStock - reserveLimit);
 }
 
 function generateIncomingProposal() {
     if (activeIncomingProposal || document.getElementById("bot-nego-modal").classList.contains("open")) return;
-
     let availableBots = Object.keys(bots).filter(k => !bots[k].isEmbargo);
     if(availableBots.length === 0) return;
 
@@ -720,9 +727,7 @@ function generateIncomingProposal() {
     if (botTradable < 2) return;
 
     let baseBotGiveAmt = botGiveType === "돈" ? 900 : (["노동력", "목재", "농산물", "철광석"].includes(botGiveType) ? 40 : 3);
-    
-    let forceMod = 1.0;
-    if(selectedBot.isBigBang || selectedBot.relation < 35) forceMod = 0.65; 
+    let forceMod = selectedBot.relation < 35 ? 0.65 : 1.0; 
 
     let calculatedPlayerTakeAmt = Math.round(((resourceValues[botGiveType] * baseBotGiveAmt) / resourceValues[playerGiveType]) / forceMod);
     if (calculatedPlayerTakeAmt < 1) calculatedPlayerTakeAmt = 1;
@@ -730,14 +735,10 @@ function generateIncomingProposal() {
     activeIncomingProposal = { botName: selectedBot.name, giveType: botGiveType, giveAmt: baseBotGiveAmt, takeType: playerGiveType, takeAmt: calculatedPlayerTakeAmt };
 
     let relStyle = selectedBot.relation < 40 ? "bad-relation" : "";
-    let prefix = selectedBot.isBigBang ? "⚠️ [총동원 무력시위]" : (selectedBot.relation < 40 ? "🔥 [강압적 요구]" : "🏛️ [정식 제안]");
-    let tariffWarning = selectedBot.relation < 50 ? `<br><span style="color:var(--warning); font-size:11px;">※ 수락 시 관세 $500 부과</span>` : "";
-
     document.getElementById("bot-request-container").innerHTML = `
         <div class="proposal-card ${relStyle}">
-            <strong style="color:#f43f5e;">${prefix} ${selectedBot.name}:</strong>${tariffWarning}<br>
-            🎁 제공 자원: <span style="color:#34d399;">${botGiveType} ${baseBotGiveAmt}개</span><br>
-            💸 대가 요구: <span style="color:#f87171;">${playerGiveType} ${calculatedPlayerTakeAmt}개</span>
+            <strong style="color:#f43f5e;">🏛️ [외교 문서] ${selectedBot.name}:</strong><br>
+            🎁 제공: <span style="color:#34d399;">${botGiveType} ${baseBotGiveAmt}개</span> | 💸 요구: <span style="color:#f87171;">${playerGiveType} ${calculatedPlayerTakeAmt}개</span>
             <div class="proposal-ops">
                 <button onclick="handleBotOffer(true)" style="background:var(--success);">수용</button>
                 <button onclick="openPlayerNegoModal()" style="background:var(--accent);">조율</button>
@@ -749,7 +750,7 @@ function generateIncomingProposal() {
 function openPlayerNegoModal() {
     document.getElementById("nego-player-give").value = activeIncomingProposal.takeAmt;
     document.getElementById("nego-bot-give").value = activeIncomingProposal.giveAmt;
-    document.getElementById("nego-modal").classList.add("open");
+    document.getElementById("nego-modal").style.display = "flex";
 }
 
 function submitPlayerNego() {
@@ -758,44 +759,31 @@ function submitPlayerNego() {
     closeModal('nego-modal');
 
     let targetBot = bots[activeIncomingProposal.botName];
-    let tolerance = targetBot.isBigBang ? 1.01 : 1.15;
-
-    if ((bGive / pGive) <= (activeIncomingProposal.giveAmt / activeIncomingProposal.takeAmt) * tolerance) {
+    if ((bGive / pGive) <= (activeIncomingProposal.giveAmt / activeIncomingProposal.takeAmt) * 1.15) {
         activeIncomingProposal.giveAmt = bGive; activeIncomingProposal.takeAmt = pGive;
-        appendLog(`[네고 타결] ${activeIncomingProposal.botName}과의 마찰 끝에 조약 수정 수령.`);
         handleBotOffer(true);
     } else {
-        appendLog(`[네고 거부] ${activeIncomingProposal.botName}이 모욕적인 조건이라며 외교 채널을 차단했습니다.`);
-        modifyRelation(targetBot.name, -12); 
-        clearProposalArea();
+        appendLog(`[협상 무산] ${activeIncomingProposal.botName}이 제안을 일축했습니다.`);
+        modifyRelation(targetBot.name, -10); clearProposalArea();
     }
 }
 
 function handleBotOffer(accept) {
     if (!activeIncomingProposal) return;
     let targetBot = bots[activeIncomingProposal.botName];
-
     if (accept) {
         let skReq = keyMapping[activeIncomingProposal.takeType];
         let skGive = keyMapping[activeIncomingProposal.giveType];
-        
         let tariff = targetBot.relation < 50 ? 500 : 0;
-        if (player.resources["money"] < tariff) { alert("관세를 지불할 자금이 부족해 거래가 취소됩니다."); clearProposalArea(); return; }
+        if (player.resources["money"] < tariff || (player.resources[skReq] || 0) < activeIncomingProposal.takeAmt) { alert("자원이 부족합니다."); clearProposalArea(); return; }
 
-        if ((player.resources[skReq] || 0) < activeIncomingProposal.takeAmt) { alert("국고 자원이 부족합니다."); clearProposalArea(); return; }
-
-        if(tariff > 0) {
-            player.resources["money"] -= tariff;
-            appendLog(`<span style="color:var(--warning)">[관세청] 비우호국 거래로 관세 $500 징수됨.</span>`);
-        }
-
+        player.resources["money"] -= tariff;
         player.resources[skReq] -= activeIncomingProposal.takeAmt; player.resources[skGive] += activeIncomingProposal.giveAmt;
         targetBot.resources[skGive] -= activeIncomingProposal.giveAmt; targetBot.resources[skReq] += activeIncomingProposal.takeAmt;
-        appendLog(`[통상 완료] ${targetBot.name} 조약 체결 승인.`);
+        appendLog(`[계약 완수] ${targetBot.name}과 비즈니스 교류 성공.`);
         modifyRelation(targetBot.name, +4); 
     } else {
-        appendLog(`[조약 파기] 제안을 공식 거부했습니다.`);
-        modifyRelation(targetBot.name, -5); 
+        modifyRelation(targetBot.name, -3); 
     }
     clearProposalArea();
 }
@@ -808,93 +796,64 @@ function sendPlayerTradeRequest() {
     const tAmt = parseInt(document.getElementById("num-take-amt").value);
 
     let targetBot = bots[bName];
-    if (targetBot.isEmbargo) { alert("금수조치 상태인 국가와는 거래할 수 없습니다."); return; }
-
     let tariff = targetBot.relation < 50 ? 500 : 0;
-    if (player.resources["money"] < tariff) { alert("비우호국 무역에 필요한 관세 지불금($500)이 부족합니다."); return; }
-
     let skGive = keyMapping[gType]; let skTake = keyMapping[tType];
-    if ((player.resources[skGive] || 0) < gAmt) { alert("국내 보유고가 부족합니다."); return; }
+
+    if ((player.resources[skGive] || 0) < gAmt || player.resources["money"] < tariff) { alert("재화가 부족합니다."); return; }
 
     let botStock = targetBot.resources[skTake] || 0;
     let botTradable = getBotSafeTradableAmount(bName, skTake, botStock);
 
-    if (tAmt > botStock) { appendLog(`[통상 불가] ${bName}의 국고 재고가 바닥났습니다.`); return; }
-
     if (tAmt > botTradable) {
         let suggested = Math.max(1, Math.floor(botTradable));
         activeBotNegoProposal = { botName: bName, playerGiveType: gType, playerGiveAmt: gAmt, botGiveType: tType, originalTake: tAmt, suggestedTake: suggested };
-        document.getElementById("bot-nego-title").innerText = `🤝 ${bName}의 무역 한도 제어 역제안`;
-        document.getElementById("bot-nego-text").innerHTML = `안보 비축 물량 위반으로 전량 방출은 불가능합니다.<br>대신 <b>${tType} ${suggested}개</b>만 인도하겠습니다.`;
-        document.getElementById("bot-nego-modal").classList.add("open");
+        document.getElementById("bot-nego-title").innerText = `🤝 ${bName}의 수량 제어 조율안`;
+        document.getElementById("bot-nego-text").innerHTML = `전략 안보 자원 보호를 위해 일부만 수출 가능합니다.<br>대신 <b>${tType} ${suggested}개</b> 거래는 승인 가능합니다.`;
+        document.getElementById("bot-nego-modal").style.display = "flex";
         return;
     }
 
     if ((gAmt * resourceValues[gType]) < (tAmt * resourceValues[tType] * 0.9)) {
-        appendLog(`[협상 결렬] ${bName} 통상부가 불평등 조약이라며 거부했습니다.`);
-        modifyRelation(bName, -5); 
-        return;
+        appendLog(`[국제 거절] ${bName} 상무부가 수입을 거부했습니다.`); return;
     }
 
-    if(tariff > 0) {
-        player.resources["money"] -= tariff;
-        appendLog(`<span style="color:var(--warning)">[관세청] 비우호국 수출 통관비용 $500 차감됨.</span>`);
-    }
-
+    player.resources["money"] -= tariff;
     player.resources[skGive] -= gAmt; player.resources[skTake] += tAmt;
     targetBot.resources[skTake] -= tAmt; targetBot.resources[skGive] += gAmt;
-    appendLog(`[수출 타결] ${bName} 무역 통로를 열어 국익을 확보했습니다.`);
-    modifyRelation(bName, +5);
-    refreshInterface();
+    appendLog(`[수출 타결] ${bName} 경제 벨트에 진출했습니다.`);
+    modifyRelation(bName, +5); refreshInterface();
 }
 
 function acceptBotNegoCounter() {
     let d = activeBotNegoProposal;
     let skGive = keyMapping[d.playerGiveType]; let skTake = keyMapping[d.botGiveType];
     let targetBot = bots[d.botName];
-
     let tariff = targetBot.relation < 50 ? 500 : 0;
-    if (player.resources["money"] < tariff) { alert("관세 지불금이 부족합니다."); closeModal('bot-nego-modal'); return; }
 
-    if ((player.resources[skGive] || 0) < d.playerGiveAmt) { alert("자원이 부족합니다."); return; }
-
-    if(tariff > 0) player.resources["money"] -= tariff;
-
+    if ((player.resources[skGive] || 0) < d.playerGiveAmt || player.resources["money"] < tariff) { alert("보유량이 부족합니다."); return; }
+    player.resources["money"] -= tariff;
     player.resources[skGive] -= d.playerGiveAmt; player.resources[skTake] += d.suggestedTake;
     targetBot.resources[skTake] -= d.suggestedTake; targetBot.resources[skGive] += d.playerGiveAmt;
 
-    appendLog(`[조율 타결] 상호 양보 하에 무역 협정이 체결되었습니다.`);
-    modifyRelation(d.botName, +3);
-    closeModal('bot-nego-modal');
-    refreshInterface();
+    appendLog(`[양보 체결] 역제안 조율이 성사되었습니다.`);
+    modifyRelation(d.botName, +3); closeModal('bot-nego-modal'); refreshInterface();
 }
 
 function rejectBotNegoCounter() {
-    appendLog(`[교섭 결렬] 상대의 역조율 제안을 최종 거절했습니다.`);
-    modifyRelation(activeBotNegoProposal.botName, -3);
     closeModal('bot-nego-modal');
 }
 
 function botToBotTradeSimulation() {
     let activeBots = Object.keys(bots).filter(k => !bots[k].isEmbargo);
     if(activeBots.length < 2) return;
-
     let b1 = bots[activeBots[Math.floor(Math.random() * activeBots.length)]];
     let b2 = bots[activeBots[Math.floor(Math.random() * activeBots.length)]];
     if (b1.name === b2.name) return;
 
     let k1 = keyMapping[b1.specialty]; let k2 = keyMapping[b2.specialty];
-    let b1Tradable = getBotSafeTradableAmount(b1.name, k1, b1.resources[k1]);
-    let b2Tradable = getBotSafeTradableAmount(b2.name, k2, b2.resources[k2]);
-
-    if (b1Tradable > 3 && b2Tradable > 3) {
-        let amt1 = ["tech", "gold", "oil"].includes(k1) ? 1 : 12;
-        let amt2 = Math.round((resourceValues[b1.specialty] * amt1) / resourceValues[b2.specialty]) || 1;
-
-        if(b1.resources[k1] >= amt1 && b2.resources[k2] >= amt2) {
-            b1.resources[k1] -= amt1; b1.resources[k2] += amt2;
-            b2.resources[k2] -= amt2; b2.resources[k1] += amt1;
-        }
+    if (b1.resources[k1] > 10 && b2.resources[k2] > 10) {
+        b1.resources[k1] -= 2; b1.resources[k2] += 2;
+        b2.resources[k2] -= 2; b2.resources[k1] += 2;
     }
 }
 
@@ -903,20 +862,18 @@ function botAutoUpgradeCheck() {
         let bObj = bots[bName];
         if (bObj.level >= upgradeSteps.length) continue;
         let nextStep = upgradeSteps[bObj.level];
-        
         let canUpgrade = true;
         for (let res in nextStep.req) {
-            let reqAmt = bObj.isUnderdog ? Math.ceil(nextStep.req[res] * 0.65) : nextStep.req[res];
+            let reqAmt = bObj.isUnderdog ? Math.ceil(nextStep.req[res] * 0.6) : nextStep.req[res];
             if ((bObj.resources[keyMapping[res]] || 0) < reqAmt) canUpgrade = false;
         }
-
         if (canUpgrade) {
             for (let res in nextStep.req) {
-                let reqAmt = bObj.isUnderdog ? Math.ceil(nextStep.req[res] * 0.65) : nextStep.req[res];
+                let reqAmt = bObj.isUnderdog ? Math.ceil(nextStep.req[res] * 0.6) : nextStep.req[res];
                 bObj.resources[keyMapping[res]] -= reqAmt; 
             }
             bObj.level++;
-            appendLog(`<span style="color:var(--warning); font-weight:bold;">⚠️ [경쟁국 도약] ${bName}이 가속 공정으로 [${bObj.level}단계] 고도화를 완수했습니다!</span>`);
+            appendLog(`🔔 [경쟁국 고도화] <b>${bName}</b>이 국책 사업을 완수해 [${upgradeSteps[bObj.level-1].name}] 단계로 진입했습니다!`);
             refreshInterface();
         }
     }
@@ -927,14 +884,200 @@ function clearProposalArea() {
     activeIncomingProposal = null; refreshInterface();
 }
 
-function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+function closeModal(id) { document.getElementById(id).style.display = "none"; }
 
 function triggerUpgrade() {
     let currentStep = upgradeSteps[player.level];
     for (let res in currentStep.req) { player.resources[keyMapping[res]] -= currentStep.req[res]; }
     player.level++;
-    appendLog(`[🎉 대형 국책 완성] 국가 최고 존엄 국경 사업 <strong>[${currentStep.name}]</strong> 완수!`);
+    appendLog(`[🎉 문명 도약] 새로운 시대의 문이 열렸습니다: <strong>[${currentStep.name}]</strong> 공포!`);
     refreshInterface();
+
+    // 10단계(최종) 도달 시 엔딩 스크린 호출
+    if (player.level >= upgradeSteps.length) {
+        showEndingScreen();
+    }
+}
+
+// ==========================================
+// 🤖 봇 인공지능 (무역 및 성장) 개선 로직
+// ==========================================
+
+// 봇이 다음 레벨업에 필요한 자원을 파악
+function getBotNeededResources(botName) {
+    let b = bots[botName];
+    if (b.level >= upgradeSteps.length) return {};
+    let nextStep = upgradeSteps[b.level];
+    let needed = {};
+    for (let resName in nextStep.req) {
+        let sysKey = keyMapping[resName];
+        let reqAmt = b.isUnderdog ? Math.ceil(nextStep.req[resName] * 0.65) : nextStep.req[resName];
+        let currentAmt = b.resources[sysKey] || 0;
+        if (currentAmt < reqAmt) {
+            needed[sysKey] = reqAmt - currentAmt;
+        }
+    }
+    return needed;
+}
+
+// 봇 대 봇 스마트 무역 시뮬레이션
+function botToBotTradeSimulation() {
+    let activeBots = Object.keys(bots).filter(k => !bots[k].isEmbargo && bots[k].policy !== 'closed');
+    if (activeBots.length < 2) return;
+
+    // 무작위로 거래 시도
+    let buyerName = activeBots[Math.floor(Math.random() * activeBots.length)];
+    let buyer = bots[buyerName];
+    let buyerNeeds = getBotNeededResources(buyerName);
+    let neededKeys = Object.keys(buyerNeeds);
+
+    // 살 게 없거나 레벨을 다 올렸으면 일반 무역 
+    if (neededKeys.length === 0) {
+        doRandomBotTrade(activeBots);
+        return;
+    }
+
+    // 가장 급하게 필요한 자원 하나 선택
+    let targetResKey = neededKeys[0];
+    let targetResName = Object.keys(keyMapping).find(k => keyMapping[k] === targetResKey);
+
+    // 해당 자원을 특산물로 가지거나 많이 보유한 판매자 찾기
+    let sellerName = null;
+    let maxTradable = 0;
+    
+    for (let bName of activeBots) {
+        if (bName === buyerName) continue;
+        let tradableAmt = getBotSafeTradableAmount(bName, targetResKey, bots[bName].resources[targetResKey] || 0);
+        if (tradableAmt > maxTradable) {
+            maxTradable = tradableAmt;
+            sellerName = bName;
+        }
+    }
+
+    // 적합한 판매자를 찾았고, 팔 물량이 충분하면 거래 시도
+    if (sellerName && maxTradable > 2) {
+        let seller = bots[sellerName];
+        let buyerGiveType = buyer.specialty;
+        let buyerGiveKey = keyMapping[buyerGiveType];
+        let buyerTradableAmt = getBotSafeTradableAmount(buyerName, buyerGiveKey, buyer.resources[buyerGiveKey] || 0);
+
+        if (buyerTradableAmt > 2) {
+            // 거래 수량 결정 (희귀 자원은 적게)
+            let takeAmt = ["tech", "gold", "oil"].includes(targetResKey) ? 1 : Math.min(10, maxTradable);
+            
+            // 가치 교환 계산: buyerGiveType을 얼마나 줘야 targetResName을 takeAmt만큼 받을 수 있나?
+            let giveAmt = Math.ceil((resourceValues[targetResName] * takeAmt) / resourceValues[buyerGiveType]);
+            
+            // 희귀 자원을 주면서 일반 자원을 얻으려 할 때, 주는 양이 0이 되는 것 방지
+            if (giveAmt < 1) giveAmt = 1;
+
+            if (buyerTradableAmt >= giveAmt) {
+                // 거래 성사
+                buyer.resources[buyerGiveKey] -= giveAmt;
+                buyer.resources[targetResKey] += takeAmt;
+                seller.resources[targetResKey] -= takeAmt;
+                seller.resources[buyerGiveKey] += giveAmt;
+                
+                // 우호도 소폭 상승
+                buyer.relation = Math.min(100, buyer.relation + 1);
+                seller.relation = Math.min(100, seller.relation + 1);
+            }
+        }
+    }
+}
+
+// 봇끼리 특산물을 무작위로 교환하는 일반 로직 (보완용)
+function doRandomBotTrade(activeBots) {
+    let b1Name = activeBots[Math.floor(Math.random() * activeBots.length)];
+    let b2Name = activeBots[Math.floor(Math.random() * activeBots.length)];
+    if (b1Name === b2Name) return;
+
+    let b1 = bots[b1Name];
+    let b2 = bots[b2Name];
+    let k1 = keyMapping[b1.specialty]; 
+    let k2 = keyMapping[b2.specialty];
+    
+    let b1Tradable = getBotSafeTradableAmount(b1Name, k1, b1.resources[k1]);
+    let b2Tradable = getBotSafeTradableAmount(b2Name, k2, b2.resources[k2]);
+
+    if (b1Tradable > 3 && b2Tradable > 3) {
+        let amt1 = ["tech", "gold", "oil"].includes(k1) ? 1 : 12;
+        let amt2 = Math.round((resourceValues[b1.specialty] * amt1) / resourceValues[b2.specialty]) || 1;
+
+        if (b1.resources[k1] >= amt1 && b2.resources[k2] >= amt2) {
+            b1.resources[k1] -= amt1; 
+            b1.resources[k2] += amt2;
+            b2.resources[k2] -= amt2; 
+            b2.resources[k1] += amt1;
+        }
+    }
+}
+
+function botAutoUpgradeCheck() {
+    // 플레이어의 레벨에 기반한 동적 페이싱 (Dynamic Pacing)
+    let playerPacingLevel = Math.max(1, player.level + 1); 
+
+    for (let bName in bots) {
+        let bObj = bots[bName];
+        if (bObj.level >= upgradeSteps.length) continue;
+        
+        // 너무 빨리 성장하는 봇 억제: 플레이어보다 2레벨 이상 앞서가면 업그레이드 확률 감소
+        if (bObj.level > playerPacingLevel + 1 && Math.random() < 0.6) continue;
+
+        let nextStep = upgradeSteps[bObj.level];
+        let canUpgrade = true;
+        
+        for (let res in nextStep.req) {
+            let reqAmt = bObj.isUnderdog ? Math.ceil(nextStep.req[res] * 0.65) : nextStep.req[res];
+            if ((bObj.resources[keyMapping[res]] || 0) < reqAmt) {
+                canUpgrade = false;
+                break;
+            }
+        }
+
+        if (canUpgrade) {
+            // 업그레이드 비용 지불
+            for (let res in nextStep.req) {
+                let reqAmt = bObj.isUnderdog ? Math.ceil(nextStep.req[res] * 0.65) : nextStep.req[res];
+                bObj.resources[keyMapping[res]] -= reqAmt; 
+            }
+            bObj.level++;
+            
+            // 플레이어가 볼 수 있는 뉴스 알림
+            let alertMsg = bObj.isUnderdog 
+                ? `<span style="color:var(--danger); font-weight:bold;">⚠️ [맹추격] 신흥국 ${bName}이 가속 공정으로 [${bObj.level}단계] 고도화를 완수했습니다!</span>`
+                : `<span style="color:var(--accent);">[세계 정세] ${bName}이 산업 혁신을 이루어 [${bObj.level}단계] 공정을 가동합니다.</span>`;
+            appendLog(alertMsg);
+            refreshInterface();
+        }
+    }
+}
+
+// 봇이 플레이어에게 제안할 때 비축 한도를 더 엄격하게 (자원 보호 성향 강화)
+function getBotSafeTradableAmount(botName, sysKey, currentStock) {
+    let b = bots[botName];
+    if (b.level >= upgradeSteps.length) return currentStock;
+    let currentStep = upgradeSteps[b.level];
+    
+    // 필수 요구 자원은 60% 비축 (이전 30%보다 강화)
+    let reserveLimit = Math.ceil((currentStep.req[Object.keys(keyMapping).find(k=>keyMapping[k]===sysKey)] || 0) * 0.6);
+    if (b.isUnderdog) reserveLimit = Math.ceil(reserveLimit * 1.5); 
+    
+    return Math.max(0, currentStock - reserveLimit);
+}
+
+function showEndingScreen() {
+    // 백그라운드 타이머 완전 정지 (경제 활동 중단)
+    clearInterval(prodInt);
+    clearInterval(propInt);
+    clearInterval(botTradeInt);
+    clearInterval(botUpInt);
+    clearInterval(stockInt);
+    clearInterval(eventInt);
+
+    // 플레이어의 국가명 반영 후 표시
+    document.getElementById("ending-title").innerHTML = `[긴급 속보]<br><span style="color: var(--accent);">${player.name}</span>, 초지능 AI 특이점 도달!`;
+    document.getElementById("ending-screen").style.display = "flex";
 }
 </script>
 </body>
